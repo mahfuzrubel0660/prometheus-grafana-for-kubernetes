@@ -24,6 +24,9 @@ spec:
         prometheus.io/scrape: "true"
         prometheus.io/port: "9090"
     spec:
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 2000
       containers:
       - name: prometheus
         image: quay.io/prometheus/prometheus:v2.0.0
@@ -43,7 +46,7 @@ spec:
         - name: data
           mountPath: /prometheus
       restartPolicy: Always
-      securityContext: {}
+      #    securityContext: {}
       terminationGracePeriodSeconds: 30
       volumes:
       - name: config-volume
@@ -51,3 +54,7 @@ spec:
           name: prometheus-config
       - name: data
         emptyDir: {}
+
+          #  - name: data
+        #        persistentVolumeClaim:
+                #          claimName: prometheus-pvc
